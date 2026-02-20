@@ -1703,12 +1703,20 @@ body {
 .founder-photo-placeholder {
   width: 100%;
   max-width: 400px;
-  height: 500px;
+  height: 350px;
   background: linear-gradient(135deg, rgba(58, 175, 169, 0.1), rgba(17, 25, 44, 0.1));
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 40px var(--shadow-lg);
   position: relative;
+}
+
+.founder-photo-placeholder img {
+  object-fit: cover;
+  border: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
 }
 
 .photo-inner {
