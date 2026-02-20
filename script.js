@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const message = encodeURIComponent('Hi! I would like to book a demo for Edu Pilot. Please provide more information about scheduling a demonstration.');
-      const whatsappUrl = `https://wa.me/2348069566631?text=${message}`;
+      const whatsappUrl = `https://wa.me/2348088645311?text=${message}`;
       window.open(whatsappUrl, '_blank');
     });
   });
