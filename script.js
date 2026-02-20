@@ -2,13 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const hamburger = document.querySelector('.hamburger');
   const navMenu = document.querySelector('.nav-menu');
-  const demoModal = document.getElementById('demoModal');
-  const successModal = document.getElementById('successModal');
 
-  if (hamburger) {
+  if (hamburger && navMenu) {
     hamburger.addEventListener('click', () => {
       navMenu.classList.toggle('active');
       hamburger.classList.toggle('active');
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+      });
     });
   }
 
@@ -16,32 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
   demoBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      if (demoModal) {
-        demoModal.classList.add('active');
-      }
+      const message = encodeURIComponent('Hi! I would like to book a demo for Edu Pilot. Please provide more information about scheduling a demonstration.');
+      const whatsappUrl = `https://wa.me/2348069566631?text=${message}`;
+      window.open(whatsappUrl, '_blank');
     });
   });
-
-  const modalClose = demoModal?.querySelector('.modal-close');
-  if (modalClose) {
-    modalClose.addEventListener('click', () => {
-      demoModal.classList.remove('active');
-    });
-  }
-
-  const modalOverlay = demoModal?.querySelector('.modal-overlay');
-  if (modalOverlay) {
-    modalOverlay.addEventListener('click', () => {
-      demoModal.classList.remove('active');
-    });
-  }
-
-  const proceedDemo = document.getElementById('proceedDemo');
-  if (proceedDemo) {
-    proceedDemo.addEventListener('click', () => {
-      window.location.href = 'demo.html';
-    });
-  }
 
   const observerOptions = {
     threshold: 0.1,
@@ -131,89 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           marketerForm.reset();
-          if (successModal) {
-            successModal.classList.add('active');
-          }
+          alert('Thank you for your application! We will review it carefully and contact you within 48 hours via email or phone to discuss the next steps.');
         } else {
           console.log('Marketer application submitted:', data);
           marketerForm.reset();
-          if (successModal) {
-            successModal.classList.add('active');
-          }
+          alert('Thank you for your application! We will review it carefully and contact you within 48 hours via email or phone to discuss the next steps.');
         }
       } catch (error) {
         console.log('Marketer application submitted:', data);
         marketerForm.reset();
-        if (successModal) {
-          successModal.classList.add('active');
-        }
+        alert('Thank you for your application! We will review it carefully and contact you within 48 hours via email or phone to discuss the next steps.');
       }
-    });
-  }
-
-  const demoForm = document.getElementById('demoForm');
-  if (demoForm) {
-    demoForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(demoForm);
-      const data = {
-        school_name: formData.get('school_name'),
-        name: formData.get('name'),
-        title: formData.get('title'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        student_count: formData.get('student_count'),
-        demo_date: formData.get('demo_date'),
-        demo_time: formData.get('demo_time'),
-        interests: formData.get('interests'),
-        created_at: new Date().toISOString()
-      };
-
-      try {
-        const response = await fetch(`${window.location.origin}/api/demo`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
-        });
-
-        if (response.ok) {
-          demoForm.reset();
-          if (successModal) {
-            successModal.classList.add('active');
-          }
-        } else {
-          console.log('Demo request submitted:', data);
-          demoForm.reset();
-          if (successModal) {
-            successModal.classList.add('active');
-          }
-        }
-      } catch (error) {
-        console.log('Demo request submitted:', data);
-        demoForm.reset();
-        if (successModal) {
-          successModal.classList.add('active');
-        }
-      }
-    });
-  }
-
-  const closeSuccess = document.getElementById('closeSuccess');
-  if (closeSuccess) {
-    closeSuccess.addEventListener('click', () => {
-      if (successModal) {
-        successModal.classList.remove('active');
-      }
-    });
-  }
-
-  const successOverlay = successModal?.querySelector('.modal-overlay');
-  if (successOverlay) {
-    successOverlay.addEventListener('click', () => {
-      successModal.classList.remove('active');
     });
   }
 
@@ -269,6 +182,12 @@ document.addEventListener('DOMContentLoaded', () => {
             behavior: 'smooth',
             block: 'start'
           });
+          if (navMenu) {
+            navMenu.classList.remove('active');
+            if (hamburger) {
+              hamburger.classList.remove('active');
+            }
+          }
         }
       }
     });
@@ -281,30 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const icons3D = document.querySelectorAll('.icon-3d, .marketer-illustration');
-  icons3D.forEach(icon => {
-    icon.addEventListener('mousemove', (e) => {
-      const rect = icon.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const rotateX = (y - centerY) / 10;
-      const rotateY = (centerX - x) / 10;
-
-      icon.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-20px)`;
-    });
-
-    icon.addEventListener('mouseleave', () => {
-      icon.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-    });
-  });
-
   const currentPage = window.location.pathname.split('/').pop();
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => {
+  const navLinksActive = document.querySelectorAll('.nav-link');
+  navLinksActive.forEach(link => {
     const href = link.getAttribute('href');
     if (href === currentPage || (currentPage === '' && href === 'index.html')) {
       link.classList.add('active');
